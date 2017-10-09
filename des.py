@@ -208,9 +208,16 @@ class DES(object):
             bin_key = str_to_str_bin(key)
             bin_msg = str_to_str_bin(message)
             
-        subkeys = self.generate_subkeys(key)
-        encoded = self.encode(bin_msg, subkeys)
+        partials = split_binary(bin_msg)
+        partials_encoded = []
         
+        subkeys = self.generate_subkeys(key)
+        
+        for m in partials:
+            partials_encoded.append(self.encode(m, subkeys))
+        
+        encoded = join(partials_encoded)
+
         if self.hex_mode:
             encoded = str_bin_to_hex(encoded)
         else:
@@ -226,16 +233,23 @@ class DES(object):
         else:
             bin_key = str_to_str_bin(key)
             bin_msg = str_to_str_bin(cipher)
-            
+         
+        partials = split_binary(bin_msg)
+        partials_encoded = []
+          
         subkeys = self.generate_subkeys(key)
-        encoded = self.encode(bin_msg, subkeys[::-1])
+        
+        for m in partials:
+            partials_encoded.append(self.encode(m, subkeys[::-1]))
+        
+        encoded = join(partials_encoded)
         
         if self.hex_mode:
             encoded = str_bin_to_hex(encoded)
         else:
             encoded = str_bin_to_str_ascii(encoded)
         
-        return encoded
+        return encoded.replace(chr(0), '')
     
     
     def encode(self, str_bin, Kn):
