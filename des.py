@@ -206,13 +206,13 @@ class DES(object):
         return encoded
     
     
-    def decrypt(self, chipper, key):
+    def decrypt(self, cipher, key):
         if self.hex_mode:
             bin_key = hex_to_str_bin(key)
-            bin_msg = hex_to_str_bin(chipper)
+            bin_msg = hex_to_str_bin(cipher)
         else:
             bin_key = str_to_str_bin(key)
-            bin_msg = str_to_str_bin(chipper)
+            bin_msg = str_to_str_bin(cipher)
             
         subkeys = self.generate_subkeys(key)
         encoded = self.encode(bin_msg, subkeys[::-1])
