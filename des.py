@@ -155,6 +155,19 @@ def xor(sb1, sb2):
     sb_2 = int(sb2, 2)
     result = sb_1 ^ sb_2
     return padding(result, pad)
+
+
+def split_binary(str_bin):
+    list_text = []
+    divisor, remainder = divmod(len(str_bin), 64)
+
+    for i in range(divisor):
+        list_text.append(str_bin[i*64:(i+1)*64])
+    
+    if remainder > 0:
+        list_text.append(str_bin[-remainder:] + '0' * (64-remainder))
+    
+    return list_text
     
 
 class DES(object):
